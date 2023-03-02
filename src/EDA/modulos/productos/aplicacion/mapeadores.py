@@ -1,13 +1,13 @@
-from aeroalpes.seedwork.aplicacion.dto import Mapeador as AppMap
-from aeroalpes.seedwork.dominio.repositorios import Mapeador as RepMap
-from aeroalpes.modulos.vuelos.dominio.entidades import Reserva, Aeropuerto
-from aeroalpes.modulos.vuelos.dominio.objetos_valor import Itinerario, Odo, Segmento, Leg
-from .dto import ReservaDTO, ItinerarioDTO, OdoDTO, SegmentoDTO, LegDTO
+from EDA.seedwork.aplicacion.dto import Mapeador as AppMap
+from EDA.seedwork.dominio.repositorios import Mapeador as RepMap
+from EDA.modulos.productos.dominio.entidades import Compra, Aeropuerto
+#from EDA.modulos.productos.dominio.objetos_valor import Itinerario, Odo, Segmento, Leg
+from .dto import CompraDTO, ItinerarioDTO, OdoDTO, SegmentoDTO, LegDTO
 
 from datetime import datetime
 
-class MapeadorReservaDTOJson(AppMap):
-    def _procesar_itinerario(self, itinerario: dict) -> ItinerarioDTO:
+class MapeadorCompraDTOJson(AppMap):
+    """def _procesar_itinerario(self, itinerario: dict) -> ItinerarioDTO:
         odos_dto: list[OdoDTO] = list()
         for odo in itinerario.get('odos', list()):
 
@@ -22,24 +22,24 @@ class MapeadorReservaDTOJson(AppMap):
             
             odos_dto.append(Odo(segmentos_dto))
 
-        return ItinerarioDTO(odos_dto)
+        return ItinerarioDTO(odos_dto)"""
     
-    def externo_a_dto(self, externo: dict) -> ReservaDTO:
-        reserva_dto = ReservaDTO()
+    def externo_a_dto(self, externo: dict) -> CompraDTO:
+        compra_dto = CompraDTO()
 
-        itinerarios: list[ItinerarioDTO] = list()
+        #itinerarios: list[ItinerarioDTO] = list()
         for itin in externo.get('itinerarios', list()):
-            reserva_dto.itinerarios.append(self._procesar_itinerario(itin))
+            compra_dto.itinerarios.append(self._procesar_itinerario(itin))
 
-        return reserva_dto
+        return compra_dto
 
-    def dto_a_externo(self, dto: ReservaDTO) -> dict:
+    def dto_a_externo(self, dto: CompraDTO) -> dict:
         return dto.__dict__
 
-class MapeadorReserva(RepMap):
+class MapeadorCompra(RepMap):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
-    def _procesar_itinerario(self, itinerario_dto: ItinerarioDTO) -> Itinerario:
+    """def _procesar_itinerario(self, itinerario_dto: ItinerarioDTO) -> Itinerario:
         odos = list()
 
         for odo_dto in itinerario_dto.odos:
@@ -62,10 +62,10 @@ class MapeadorReserva(RepMap):
             
             odos.append(Odo(segmentos))
 
-        return Itinerario(odos)
+        return Itinerario(odos)"""
 
     def obtener_tipo(self) -> type:
-        return Reserva.__class__
+        return Compra.__class__
 
     def locacion_a_dict(self, locacion):
         if not locacion:
@@ -79,14 +79,14 @@ class MapeadorReserva(RepMap):
         )
         
 
-    def entidad_a_dto(self, entidad: Reserva) -> ReservaDTO:
+    def entidad_a_dto(self, entidad: Compra) -> CompraDTO:
         
         fecha_creacion = entidad.fecha_creacion.strftime(self._FORMATO_FECHA)
         fecha_actualizacion = entidad.fecha_actualizacion.strftime(self._FORMATO_FECHA)
         _id = str(entidad.id)
-        itinerarios = list()
+        #itinerarios = list()
 
-        for itin in entidad.itinerarios:
+        """for itin in entidad.itinerarios:
             odos = list()
             for odo in itin.odos:
                 segmentos = list()
@@ -105,18 +105,18 @@ class MapeadorReserva(RepMap):
                 odos.append(OdoDTO(segmentos))
             itinerarios.append(ItinerarioDTO(odos))
         
-        return ReservaDTO(fecha_creacion, fecha_actualizacion, _id, itinerarios)
+        return CompraDTO(fecha_creacion, fecha_actualizacion, _id, itinerarios)
+        """
+    def dto_a_entidad(self, dto: CompraDTO) -> Compra:
+        compra = Compra()
+        #compra.itinerarios = list()
 
-    def dto_a_entidad(self, dto: ReservaDTO) -> Reserva:
-        reserva = Reserva()
-        reserva.itinerarios = list()
-
-        itinerarios_dto: list[ItinerarioDTO] = dto.itinerarios
+        """itinerarios_dto: list[ItinerarioDTO] = dto.itinerarios
 
         for itin in itinerarios_dto:
-            reserva.itinerarios.append(self._procesar_itinerario(itin))
-        
-        return reserva
+            compra.itinerarios.append(self._procesar_itinerario(itin))
+        """
+        return compra
 
 
 

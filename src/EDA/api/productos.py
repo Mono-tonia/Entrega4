@@ -1,15 +1,15 @@
 import EDA.seedwork.presentacion.api as api
 import json
 #from EDA.modulos.productos.aplicacion.dto import CompraDTO
-#from EDA.seedwork.dominio.excepciones import ExcepcionDominio
+from EDA.seedwork.dominio.excepciones import ExcepcionDominio
 
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
-#from EDA.modulos.productos.aplicacion.mapeadores import MapeadorCompraDTOJson
-#from EDA.modulos.productos.aplicacion.comandos.crear_compra import CrearCompra
-#from EDA.modulos.productos.aplicacion.queries.obtener_compra import ObtenerCompra
-#from EDA.seedwork.aplicacion.comandos import ejecutar_commando
-#from EDA.seedwork.aplicacion.queries import ejecutar_query
+from EDA.modulos.productos.aplicacion.mapeadores import MapeadorCompraDTOJson
+from EDA.modulos.productos.aplicacion.comandos.crear_compra import CrearCompra
+from EDA.modulos.productos.aplicacion.queries.obtener_compra import ObtenerCompra
+from EDA.seedwork.aplicacion.comandos import ejecutar_commando
+from EDA.seedwork.aplicacion.queries import ejecutar_query
 
 bp = api.crear_blueprint('productos', '/productos')
 
