@@ -18,7 +18,8 @@ Este repositorio sigue en general la misma estructura del repositorio de origen.
 Desde el directorio principal ejecute el siguiente comando.
 
 ```bash
-docker-compose --profiles db up
+docker-compose --profile db up
+docker-compose --profile pulsar up
 ```
 
 Este comando descarga las imágenes e instala las dependencias de la base datos.
