@@ -4,7 +4,7 @@ En este archivo usted encontrará los objetos valor del dominio de cliente
 
 """
 
-from EDA.seedwork.dominio.objetos_valor import ObjetoValor, Ciudad
+from EDA.seedwork.dominio.objetos_valor import ObjetoValor
 from dataclasses import dataclass
 
 @dataclass(frozen=True)
@@ -21,12 +21,6 @@ class Email(ObjetoValor):
 @dataclass(frozen=True)
 class Cedula(ObjetoValor):
     numero: int
-    ciudad: Ciudad
-
-@dataclass(frozen=True)
-class Rut(ObjetoValor):
-    numero: int
-    ciudad: Ciudad
 
 class MetodosPago(ObjetoValor):
     # TODO
