@@ -17,10 +17,15 @@ from enum import Enum
 class Nombre():
     nombre: str
 
-class Categoria(Enum): 
+class Categoria(): 
     categoria: str
 
 class EstadoProducto(str, Enum):
     EN_BODEGA = "En bodega"
     EN_CAMINO = "En camino"
     
+class Capacidad():
+    capacidad:float()
+
+class Direccion():
+    direccion:str

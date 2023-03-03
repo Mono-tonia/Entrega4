@@ -15,29 +15,22 @@ from EDA.seedwork.dominio.entidades import Locacion, AgregacionRaiz, Entidad
 
 @dataclass
 class Compra(Entidad):
-    ##valortotal y tipo
     codigo: ov.Codigo = field(default_factory=ov.Codigo)
-    nombre: ov.NombreAero = field(default_factory=ov.NombreAero)
-    itinerarios: list[ov.Itinerario] = field(default_factory=list[ov.Itinerario])
-
-    def obtener_itinerarios(self, odos: list[Odo], parametros: ParametroBusca):
-        return self.itinerarios
 
 @dataclass
-class Pasajero(Entidad):
-    clase: ov.Clase = field(default_factory=ov.Clase)
+class Bodega(Entidad):
     tipo: ov.TipoPasajero = field(default_factory=ov.TipoPasajero)
+    capacidad: ov.Capacidad = field(default_factory=ov.Capacidad)
+    direccion: ov.Direccion = field(default_factory=ov.Direccion)
 
 @dataclass
 class Compra(AgregacionRaiz):
     id_cliente: uuid.UUID = field(hash=True, default=None)
     estado: ov.EstadoCompra = field(default=ov.EstadoCompra.PENDIENTE)
-    itinerarios: list[ov.Itinerario] = field(default_factory=list[ov.Itinerario])
 
     def crear_reserva(self, reserva: Compra):
         self.id_cliente = reserva.id_cliente
         self.estado = reserva.estado
-        self.itinerarios = reserva.itinerarios
         self.fecha_creacion = datetime.datetime.now()
 
         self.agregar_evento(CompraCreada(id_reserva=self.id, id_cliente=self.id_cliente, estado=self.estado.name, fecha_creacion=self.fecha_creacion))
