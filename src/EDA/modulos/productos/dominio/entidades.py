@@ -19,6 +19,7 @@ class Compra(Entidad):
 
 @dataclass
 class Bodega(Entidad):
+    id_bodega: uuid.UUID = field(hash=True, default=None)
     tipoBodega: ov.TipoBodega = field(default_factory=ov.TipoBodega)
     capacidad: ov.Capacidad = field(default_factory=ov.Capacidad)
     direccion: ov.Direccion = field(default_factory=ov.Direccion)
