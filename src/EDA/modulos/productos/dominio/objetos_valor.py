@@ -20,12 +20,16 @@ class Nombre():
 class Categoria(): 
     categoria: str
 
-class EstadoProducto(str, Enum):
-    EN_BODEGA = "En bodega"
-    EN_CAMINO = "En camino"
+class EstadoCompra(str, Enum):
+    APROBADA = "Aprobada"
+    PENDIENTE = "Pendiente"
+    CANCELADA = "Cancelada"
     
 class Capacidad():
     capacidad:float()
 
 class Direccion():
     direccion:str
+
+class TipoBodega():
+    tipoBodega:str
