@@ -91,6 +91,8 @@ class Itinerario(ObjetoValor):
             return f"{str(self.odos[0].origen())}-{str(self.odos[0].destino())}"
         else:
             return f"{str(self.odos[0].origen())}-{str(self.odos[-1].destino())}"
+        
+
 
 @dataclass(frozen=True)
 class Odo(Ruta):
