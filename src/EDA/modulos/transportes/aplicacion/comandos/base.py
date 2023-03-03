@@ -1,6 +1,6 @@
-from EDA.seedwork.aplicacion.comandos import ComandoHandler
+from aeroalpes.seedwork.aplicacion.comandos import ComandoHandler
 from aeroalpes.modulos.vuelos.infraestructura.fabricas import FabricaRepositorio
-from EDA.modulos.transportes.dominio.fabricas import FabricaVuelos
+from aeroalpes.modulos.vuelos.dominio.fabricas import FabricaVuelos
 
 class CrearReservaBaseHandler(ComandoHandler):
     def __init__(self):
