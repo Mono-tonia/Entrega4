@@ -1,10 +1,10 @@
-from aeroalpes.seedwork.aplicacion.queries import Query, QueryHandler, ResultadoQuery
+from EDA.seedwork.aplicacion.queries import Query, QueryHandler, ResultadoQuery
 import uuid
 
-class ObtenerReservasCanceladas(Query):
+class ObtenerDistribucionesTerminadas(Query):
     ...
 
-class ObtenerReservasCanceladasHandler(QueryHandler):
+class ObtenerDistribucionesTerminadasHandler(QueryHandler):
 
     def handle() -> ResultadoQuery:
         ...

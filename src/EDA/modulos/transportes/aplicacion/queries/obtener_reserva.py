@@ -1,24 +1,24 @@
-from aeroalpes.seedwork.aplicacion.queries import Query, QueryHandler, QueryResultado
-from aeroalpes.seedwork.aplicacion.queries import ejecutar_query as query
-from aeroalpes.modulos.vuelos.infraestructura.repositorios import RepositorioReservas
-from aeroalpes.modulos.vuelos.dominio.entidades import Reserva
+from EDA.seedwork.aplicacion.queries import Query, QueryHandler, QueryResultado
+from EDA.seedwork.aplicacion.queries import ejecutar_query as query
+from EDA.modulos.transportes.infraestructura.repositorios import RepositorioDistribucion
+from EDA.modulos.transportes.dominio.entidades import Distribucion
 from dataclasses import dataclass
 from .base import ReservaQueryBaseHandler
-from aeroalpes.modulos.vuelos.aplicacion.mapeadores import MapeadorReserva
+from EDA.modulos.transportes.aplicacion.mapeadores import MapeadorDistribucion
 import uuid
 
 @dataclass
-class ObtenerReserva(Query):
+class ObtenerDistribucion(Query):
     id: str
 
-class ObtenerReservaHandler(ReservaQueryBaseHandler):
+class ObtenerDistribucionHandler(ReservaQueryBaseHandler):
 
-    def handle(self, query: ObtenerReserva) -> QueryResultado:
-        vista = self.fabrica_vista.crear_objeto(Reserva)
-        reserva =  self.fabrica_vuelos.crear_objeto(vista.obtener_por(id=query.id)[0], MapeadorReserva())
-        return QueryResultado(resultado=reserva)
+    def handle(self, query: ObtenerDistribucion) -> QueryResultado:
+        vista = self.fabrica_vista.crear_objeto(Distribucion)
+        distribucion =  self.fabrica_transporte.crear_objeto(vista.obtener_por(id=query.id)[0], MapeadorDistribucion())
+        return QueryResultado(resultado=distribucion)
 
-@query.register(ObtenerReserva)
-def ejecutar_query_obtener_reserva(query: ObtenerReserva):
-    handler = ObtenerReservaHandler()
+@query.register(ObtenerDistribucion)
+def ejecutar_query_obtener_distribucion(query: ObtenerDistribucion):
+    handler = ObtenerDistribucionHandler()
     return handler.handle(query)
