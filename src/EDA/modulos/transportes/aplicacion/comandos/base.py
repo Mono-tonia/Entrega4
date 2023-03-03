@@ -1,17 +1,17 @@
-from aeroalpes.seedwork.aplicacion.comandos import ComandoHandler
-from aeroalpes.modulos.vuelos.infraestructura.fabricas import FabricaRepositorio
-from aeroalpes.modulos.vuelos.dominio.fabricas import FabricaVuelos
+from EDA.seedwork.aplicacion.comandos import ComandoHandler
+from EDA.modulos.transportes.infraestructura.fabricas import FabricaRepositorio
+from EDA.modulos.transportes.dominio.fabricas import FabricaTransporte
 
-class CrearReservaBaseHandler(ComandoHandler):
+class IniciarDistribucionBaseHandler(ComandoHandler):
     def __init__(self):
         self._fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
-        self._fabrica_vuelos: FabricaVuelos = FabricaVuelos()
+        self._fabrica_vuelos: FabricaTransporte = FabricaTransporte()
 
     @property
     def fabrica_repositorio(self):
         return self._fabrica_repositorio
     
     @property
-    def fabrica_vuelos(self):
-        return self._fabrica_vuelos    
+    def fabrica_transportes(self):
+        return self._fabrica_transportes  
     

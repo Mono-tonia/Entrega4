@@ -1,28 +1,18 @@
-from aeroalpes.modulos.vuelos.dominio.eventos import ReservaCreada, ReservaCancelada, ReservaAprobada, ReservaPagada
-from aeroalpes.seedwork.aplicacion.handlers import Handler
-from aeroalpes.modulos.vuelos.infraestructura.despachadores import Despachador
+from EDA.modulos.transportes.dominio.eventos import DistribucionIniciada, DistribucionTerminada
+from EDA.seedwork.aplicacion.handlers import Handler
+from EDA.modulos.transportes.infraestructura.despachadores import Despachador
 
-class HandlerReservaIntegracion(Handler):
-
-    @staticmethod
-    def handle_reserva_creada(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
+class HandlerDistribucionIntegracion(Handler):
 
     @staticmethod
-    def handle_reserva_cancelada(evento):
+    def handle_distribucion_iniciada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
+        despachador.publicar_evento(evento, 'eventos-distribucion')
 
     @staticmethod
-    def handle_reserva_aprobada(evento):
+    def handle_distribucion_terminada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
-
-    @staticmethod
-    def handle_reserva_pagada(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-reserva')
+        despachador.publicar_evento(evento, 'eventos-distribucion')
 
 
     

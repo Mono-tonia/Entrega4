@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from aeroalpes.seedwork.aplicacion.dto import DTO
+from EDA.seedwork.aplicacion.dto import DTO
 
 @dataclass(frozen=True)
 class LegDTO(DTO):
@@ -17,12 +17,12 @@ class OdoDTO(DTO):
     segmentos: list[SegmentoDTO]
 
 @dataclass(frozen=True)
-class ItinerarioDTO(DTO):
+class ProductoDTO(DTO):
     odos: list[OdoDTO]
 
 @dataclass(frozen=True)
-class ReservaDTO(DTO):
+class DistribucionDTO(DTO):
     fecha_creacion: str = field(default_factory=str)
     fecha_actualizacion: str = field(default_factory=str)
     id: str = field(default_factory=str)
-    itinerarios: list[ItinerarioDTO] = field(default_factory=list)
+    productos: list[ProductoDTO] = field(default_factory=list)

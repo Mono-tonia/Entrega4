@@ -1,15 +1,15 @@
-from aeroalpes.seedwork.aplicacion.dto import Mapeador as AppMap
-from aeroalpes.seedwork.dominio.repositorios import Mapeador as RepMap
-from aeroalpes.modulos.vuelos.dominio.entidades import Reserva, Aeropuerto
-from aeroalpes.modulos.vuelos.dominio.objetos_valor import Itinerario, Odo, Segmento, Leg
-from .dto import ReservaDTO, ItinerarioDTO, OdoDTO, SegmentoDTO, LegDTO
+from EDA.seedwork.aplicacion.dto import Mapeador as AppMap
+from EDA.seedwork.dominio.repositorios import Mapeador as RepMap
+from EDA.modulos.transportes.dominio.entidades import Distribucion
+from EDA.modulos.transportes.dominio.objetos_valor import Producto, Odo, Segmento, Leg
+from .dto import DistribucionDTO, ProductoDTO, OdoDTO, SegmentoDTO, LegDTO
 
 from datetime import datetime
 
-class MapeadorReservaDTOJson(AppMap):
-    def _procesar_itinerario(self, itinerario: dict) -> ItinerarioDTO:
+class MapeadorDistribucionDTOJson(AppMap):
+    def _procesar_producto(self, producto: dict) -> ProductoDTO:
         odos_dto: list[OdoDTO] = list()
-        for odo in itinerario.get('odos', list()):
+        for odo in producto.get('odos', list()):
 
             segmentos_dto: list[SegmentoDTO] = list()
             for segmento in odo.get('segmentos', list()):
@@ -22,27 +22,27 @@ class MapeadorReservaDTOJson(AppMap):
             
             odos_dto.append(Odo(segmentos_dto))
 
-        return ItinerarioDTO(odos_dto)
+        return ProductoDTO(odos_dto)
     
-    def externo_a_dto(self, externo: dict) -> ReservaDTO:
-        reserva_dto = ReservaDTO()
+    def externo_a_dto(self, externo: dict) -> DistribucionDTO:
+        distribucion_dto = DistribucionDTO()
 
-        itinerarios: list[ItinerarioDTO] = list()
-        for itin in externo.get('itinerarios', list()):
-            reserva_dto.itinerarios.append(self._procesar_itinerario(itin))
+        productos: list[ProductoDTO] = list()
+        for itin in externo.get('productos', list()):
+            distribucion_dto.productos.append(self._procesar_producto(itin))
 
-        return reserva_dto
+        return distribucion_dto
 
-    def dto_a_externo(self, dto: ReservaDTO) -> dict:
+    def dto_a_externo(self, dto: DistribucionDTO) -> dict:
         return dto.__dict__
 
-class MapeadorReserva(RepMap):
+class MapeadorDistribucion(RepMap):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
-    def _procesar_itinerario(self, itinerario_dto: ItinerarioDTO) -> Itinerario:
+    def _procesar_producto(self, producto_dto: ProductoDTO) -> Producto:
         odos = list()
 
-        for odo_dto in itinerario_dto.odos:
+        for odo_dto in producto_dto.odos:
             segmentos = list()
             for seg_dto in odo_dto.segmentos:
                 
@@ -62,10 +62,10 @@ class MapeadorReserva(RepMap):
             
             odos.append(Odo(segmentos))
 
-        return Itinerario(odos)
+        return Producto(odos)
 
     def obtener_tipo(self) -> type:
-        return Reserva.__class__
+        return Distribucion.__class__
 
     def locacion_a_dict(self, locacion):
         if not locacion:
@@ -79,14 +79,14 @@ class MapeadorReserva(RepMap):
         )
         
 
-    def entidad_a_dto(self, entidad: Reserva) -> ReservaDTO:
+    def entidad_a_dto(self, entidad: Distribucion) -> DistribucionDTO:
         
         fecha_creacion = entidad.fecha_creacion.strftime(self._FORMATO_FECHA)
         fecha_actualizacion = entidad.fecha_actualizacion.strftime(self._FORMATO_FECHA)
         _id = str(entidad.id)
-        itinerarios = list()
+        productos = list()
 
-        for itin in entidad.itinerarios:
+        for itin in entidad.productos:
             odos = list()
             for odo in itin.odos:
                 segmentos = list()
@@ -103,20 +103,20 @@ class MapeadorReserva(RepMap):
 
                     segmentos.append(SegmentoDTO(legs))
                 odos.append(OdoDTO(segmentos))
-            itinerarios.append(ItinerarioDTO(odos))
+            productos.append(ProductoDTO(odos))
         
-        return ReservaDTO(fecha_creacion, fecha_actualizacion, _id, itinerarios)
+        return DistribucionDTO(fecha_creacion, fecha_actualizacion, _id, productos)
 
-    def dto_a_entidad(self, dto: ReservaDTO) -> Reserva:
-        reserva = Reserva()
-        reserva.itinerarios = list()
+    def dto_a_entidad(self, dto: DistribucionDTO) -> Distribucion:
+        distribucion = Distribucion()
+        distribucion.productos = list()
 
-        itinerarios_dto: list[ItinerarioDTO] = dto.itinerarios
+        productos_dto: list[ProductoDTO] = dto.productos
 
-        for itin in itinerarios_dto:
-            reserva.itinerarios.append(self._procesar_itinerario(itin))
+        for itin in productos_dto:
+            distribucion.productos.append(self._procesar_producto(itin))
         
-        return reserva
+        return distribucion
 
 
 
