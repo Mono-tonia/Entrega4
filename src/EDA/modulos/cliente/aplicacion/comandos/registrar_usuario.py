@@ -1,4 +1,4 @@
-from aeroalpes.seedwork.aplicacion.comandos import Comando, ComandoHandler
+from EDA.seedwork.aplicacion.comandos import Comando, ComandoHandler
 
 class RegistrarUsuario(Comando):
     nombres: str
