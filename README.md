@@ -29,13 +29,13 @@ Este comando descarga las imágenes e instala las dependencias de la base datos.
 Desde el directorio principal ejecute el siguiente comando.
 
 ```bash
-flask --app src/aeroalpes/api run
+flask --app src/entregasDeLosAlpes/api run
 ```
 
 Siempre puede ejecutarlo en modo DEBUG:
 
 ```bash
-flask --app src/aeroalpes/api --debug run
+flask --app src/entregasDeLosAlpes/api --debug run
 ```
 
 ### Ejecutar pruebas
@@ -54,7 +54,7 @@ coverage report
 Desde el directorio principal ejecute el siguiente comando.
 
 ```bash
-docker build . -f aeroalpes.Dockerfile -t aeroalpes/flask
+docker build . -f entregas_de_los_alpes.Dockerfile -t entregasDeLosAlpes/flask
 ```
 
 ### Ejecutar contenedora (sin compose)
@@ -62,7 +62,7 @@ docker build . -f aeroalpes.Dockerfile -t aeroalpes/flask
 Desde el directorio principal ejecute el siguiente comando.
 
 ```bash
-docker run -p 5000:5000 aeroalpes/flask
+docker run -p 5000:5000 entregasDeLosAlpes/flask
 ```
 
 ## Sidecar/Adaptador
@@ -105,7 +105,7 @@ python -m grpc_tools.protoc -Iprotos --python_out=./pb2py --pyi_out=./pb2py --gr
 Desde el directorio principal ejecute el siguiente comando.
 
 ```bash
-docker build . -f adaptador.Dockerfile -t aeroalpes/adaptador
+docker build . -f adaptador.Dockerfile -t entregasDeLosAlpes/adaptador
 ```
 
 ### Ejecutar contenedora (sin compose)
@@ -130,7 +130,7 @@ python src/notificaciones/main.py
 Desde el directorio principal ejecute el siguiente comando.
 
 ```bash
-docker build . -f notificacion.Dockerfile -t aeroalpes/notificacion
+docker build . -f notificacion.Dockerfile -t entregasDeLosAlpes/notificacion
 ```
 
 ### Ejecutar contenedora (sin compose)

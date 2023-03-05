@@ -25,8 +25,8 @@ class Producto(Entidad):
 class Orden(AgregacionRaiz):
     id_cliente: uuid.UUID = field(hash=True, default=None)
     estado: ov.EstadoOrden = field(default=ov.EstadoOrden.RECIBIDA)
-    listaProd: list[Producto] = []
-    ruta : ov.Ruta = field(default=ov.ruta)
+    listaProd: list[Producto]  = field(default_factory=list[Producto])
+    ruta : ov.Ruta = field(default=ov.Ruta)
 
     def recibir_orden(self, orden: Orden):
         self.id_cliente = orden.id_cliente

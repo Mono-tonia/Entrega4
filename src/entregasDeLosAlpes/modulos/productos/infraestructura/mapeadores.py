@@ -12,7 +12,7 @@ from entregasDeLosAlpes.modulos.productos.dominio.entidades import Producto, Ord
 from entregasDeLosAlpes.modulos.productos.dominio.eventos import OrdenProcesada, OrdenRecibida, EventoOrden
 
 from .dto import Ordenes as OrdenDTO
-from .dto import ruta as rutaDTO
+from .dto import Rutas as RutasDTO
 from .excepciones import NoExisteImplementacionParaTipoFabricaExcepcion
 from pulsar.schema import *
 
@@ -102,7 +102,7 @@ class MapadeadorEventosOrden(Mapeador):
     def dto_a_entidad(self, dto: OrdenDTO, version=LATEST_VERSION) -> Orden:
         raise NotImplementedError
 
-"""
+
 class MapeadorOrden(Mapeador):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
@@ -129,11 +129,11 @@ class MapeadorOrden(Mapeador):
 
         return [Ruta()]
 
-    def _procesar_ruta(self, ruta: any) -> list[rutaDTO]:
+    def _procesar_ruta(self, ruta: any) -> list[RutasDTO]:
         rutas_dto = list()
 
         
-        ruta_dto = rutaDTO()
+        ruta_dto = RutasDTO()
         ruta_dto.destino_codigo = ruta.destino.codigo
         ruta_dto.origen_codigo = ruta.origen.codigo
         ruta_dto.fecha_salida = ruta.fecha_salida
@@ -167,9 +167,8 @@ class MapeadorOrden(Mapeador):
         orden = Orden(dto.id, dto.fecha_creacion, dto.fecha_actualizacion)
         orden.rutas = list()
 
-        rutas_dto: list[rutaDTO] = dto.rutas
+        rutas_dto: list[RutasDTO] = dto.rutas
 
         orden.rutas.extend(self._procesar_ruta_dto(rutas_dto))
         
         return orden
-"""

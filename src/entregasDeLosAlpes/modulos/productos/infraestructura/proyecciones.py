@@ -3,7 +3,7 @@ from entregasDeLosAlpes.seedwork.infraestructura.proyecciones import ejecutar_pr
 from entregasDeLosAlpes.modulos.productos.infraestructura.fabricas import FabricaRepositorio
 from entregasDeLosAlpes.modulos.productos.infraestructura.repositorios import RepositorioOrdenes
 from entregasDeLosAlpes.modulos.productos.dominio.entidades import Orden
-from entregasDeLosAlpes.modulos.productos.infraestructura.dto import Orden as OrdenDTO
+from entregasDeLosAlpes.modulos.productos.infraestructura.dto import Ordenes as OrdenDTO
 
 from entregasDeLosAlpes.seedwork.infraestructura.utils import millis_a_datetime
 import datetime
@@ -43,7 +43,7 @@ class ProyeccionOrdenesTotales(ProyeccionOrden):
         
         db.session.commit()
 
-class ProyeccionReservasLista(ProyeccionOrden):
+class ProyeccionOrdenesLista(ProyeccionOrden):
     def __init__(self, id_orden, id_cliente, estado, fecha_recepcion, fecha_actualizacion):
         self.id_orden = id
         self.id_cliente = id_cliente
@@ -73,7 +73,7 @@ class ProyeccionReservasLista(ProyeccionOrden):
         # TODO ¿Tal vez podríamos reutilizar la Unidad de Trabajo?
         db.session.commit()
 
-class ProyeccionReservaHandler(ProyeccionHandler):
+class ProyeccionOrdenHandler(ProyeccionHandler):
     
     def handle(self, proyeccion: ProyeccionOrden):
 
@@ -85,7 +85,7 @@ class ProyeccionReservaHandler(ProyeccionHandler):
         proyeccion.ejecutar(db=db)
         
 
-@proyeccion.register(ProyeccionReservasLista)
+@proyeccion.register(ProyeccionOrdenesLista)
 @proyeccion.register(ProyeccionOrdenesTotales)
 def ejecutar_proyeccion_orden(proyeccion, app=None):
     if not app:
@@ -93,7 +93,7 @@ def ejecutar_proyeccion_orden(proyeccion, app=None):
         return
     try:
         with app.app_context():
-            handler = ProyeccionReservaHandler()
+            handler = ProyeccionOrdenHandler()
             handler.handle(proyeccion)
             
     except:
