@@ -31,7 +31,7 @@ class OrdenProcesadaPayload(Record):
     id_orden = String()
     id_cliente = String()
     estado = String()
-    producto = Producto()
+    producto = Producto
     ruta = Ruta()
 
 class EventoOrdenProcesada(EventoIntegracion):
