@@ -9,7 +9,7 @@ from entregasDeLosAlpes.config.db import db
 from entregasDeLosAlpes.modulos.productos.dominio.repositorios import RepositorioOrdenes, RepositorioEventosOrdenes
 from entregasDeLosAlpes.modulos.productos.dominio.entidades import  Producto, Orden
 from entregasDeLosAlpes.modulos.productos.dominio.fabricas import FabricaProductos
-from .dto import Orden as OrdenDTO
+from .dto import Ordenes as OrdenDTO
 from .dto import EventosOrden
 from .mapeadores import MapeadorOrden, MapadeadorEventosOrden
 from uuid import UUID

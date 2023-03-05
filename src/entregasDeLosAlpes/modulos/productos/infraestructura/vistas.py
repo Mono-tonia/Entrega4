@@ -1,7 +1,7 @@
 from entregasDeLosAlpes.seedwork.infraestructura.vistas import Vista
 from entregasDeLosAlpes.modulos.productos.dominio.entidades import Orden
 from entregasDeLosAlpes.config.db import db
-from .dto import Orden as OrdenDTO
+from .dto import Ordenes as OrdenDTO
 
 class VistaOrden(Vista):
     def obtener_por(id=None, estado=None, id_cliente=None, **kwargs) -> [Orden]:
