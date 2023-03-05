@@ -55,8 +55,8 @@ class Productos(db.Model):
 
 class Ordenes(db.Model):
     __tablename__ = "ordenes"
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
-    id_cliente = db.Column(db.Integer, nullable=False)
+    id = db.Column(db.String(40), primary_key=True, nullable=False)
+    id_cliente = db.Column(db.String(40), nullable=False)
     fecha_recepcion = db.Column(db.DateTime, nullable=False)
     productos = db.relationship('Producto', secondary=ordenes_productos, backref='ordenes')
     rutas = db.relationship('Ruta', secondary=ordenes_rutas, backref='ordenes')

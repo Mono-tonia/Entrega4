@@ -1,10 +1,8 @@
 from pydispatch import dispatcher
 
-from .handlers import HandlerReservaIntegracion
+from .handlers import HandlerOrdenIntegracion
 
-from aeroalpes.modulos.vuelos.dominio.eventos import ReservaCreada, ReservaCancelada, ReservaAprobada, ReservaPagada
+from entregasDeLosAlpes.modulos.productos.dominio.eventos import OrdenRecibida, OrdenProcesada
 
-dispatcher.connect(HandlerReservaIntegracion.handle_reserva_creada, signal=f'{ReservaCreada.__name__}Integracion')
-dispatcher.connect(HandlerReservaIntegracion.handle_reserva_cancelada, signal=f'{ReservaCancelada.__name__}Integracion')
-dispatcher.connect(HandlerReservaIntegracion.handle_reserva_pagada, signal=f'{ReservaPagada.__name__}Integracion')
-dispatcher.connect(HandlerReservaIntegracion.handle_reserva_aprobada, signal=f'{ReservaAprobada.__name__}Integracion')
+dispatcher.connect(HandlerOrdenIntegracion.handle_orden_recibida, signal=f'{OrdenRecibida.__name__}Integracion')
+dispatcher.connect(HandlerOrdenIntegracion.handle_orden_procesada, signal=f'{OrdenProcesada.__name__}Integracion')
