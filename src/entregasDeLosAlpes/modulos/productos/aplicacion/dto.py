@@ -8,7 +8,7 @@ class RutaDTO(DTO):
     origen: dict
     destino: dict
 
-@dataclass
+@dataclass(frozen=True)
 class ProductoDTO(DTO):
     codigo: str 
     nombre: str

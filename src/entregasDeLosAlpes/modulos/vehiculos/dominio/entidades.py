@@ -40,12 +40,13 @@ class Transporte(AgregacionRaiz):
         # TODO Agregar evento de compensación
 
     def entregar_producto(self, transporte: Transporte):
+        self.id_cliente = transporte.id_cliente
         self.estado = ov.EstadoCargamento.DESPACHADO
         self.listaProd=transporte.listaProd
         self.fecha_entrega = datetime.datetime.now()   
         
         for produto_act in self.listaProd:
-            self.agregar_evento(ProductoEntregado(id_transporte=self.id, producto=produto_act, fecha_entrega=self.fecha_entrega))
+            self.agregar_evento(ProductoEntregado(id_transporte=self.id, id_cliente =self.id_cliente, producto=produto_act, fecha_entrega=self.fecha_entrega))
         # TODO Agregar evento de compensación
 
 

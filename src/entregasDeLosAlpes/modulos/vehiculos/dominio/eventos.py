@@ -19,6 +19,7 @@ class ProductoRecibido(EventoTransporte):
 @dataclass
 class ProductoEntregado(EventoTransporte):
     id_transporte: uuid.UUID = None
+    id_cliente: uuid.UUID = None
     producto: any = None
     fecha_entrega: datetime = None
 
