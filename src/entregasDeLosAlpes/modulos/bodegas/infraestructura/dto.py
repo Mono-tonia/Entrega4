@@ -29,7 +29,6 @@ class Stock(db.Model):
     producto_codigo = db.Column(db.String(10), nullable=False, primary_key=True)
 
 
-
 class Bodegas(db.Model):
     __tablename__ = "bodegas"
     id = db.Column(db.String(40), primary_key=True, nullable=False)
@@ -65,9 +64,6 @@ class Almacenamiento(db.Model):
     ListaBodegas = db.relationship('ListaBodegas', secondary=almacenamiento_listaBodega, backref='almacenamiento')
 
 
-
-
-
 class EventosAlmacenamiento(db.Model):
     __tablename__ = "eventos_alamacenamiento"
     id = db.Column(db.String(40), primary_key=True)
@@ -79,9 +75,8 @@ class EventosAlmacenamiento(db.Model):
     nombre_servicio = db.Column(db.String(40), nullable=False)
     contenido = db.Column(db.Text, nullable=False)
 
-'''
+
 class AlmacenamientoAnalitica(db.Model):
     __tablename__ = "analitica_almacenamiento"
     fecha_recepcion = db.Column(db.Date, primary_key=True)
     total = db.Column(db.Integer, primary_key=True, nullable=False)
-'''
