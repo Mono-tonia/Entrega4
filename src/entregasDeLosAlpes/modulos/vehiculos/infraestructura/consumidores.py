@@ -6,11 +6,11 @@ import logging
 import traceback
 import datetime
 
-from entregasDeLosAlpes.modulos.productos.infraestructura.schema.v1.eventos import EventoOrdenRecibida
-from entregasDeLosAlpes.modulos.productos.infraestructura.schema.v1.comandos import ComandoRecibirOrden
+from entregasDeLosAlpes.modulos.vehiculos.infraestructura.schema.v1.eventos import EventoProductoEntregado, EventoProductoRecibido
+from entregasDeLosAlpes.modulos.vehiculos.infraestructura.schema.v1.comandos import ComandoEntregarProducto, ComandoRecibirProducto
 
 
-from entregasDeLosAlpes.modulos.productos.infraestructura.proyecciones import ProyeccionOrdenesLista, ProyeccionOrdenesTotales
+from entregasDeLosAlpes.modulos.vehiculos.infraestructura.proyecciones import ProyeccionTransportesLista, ProyeccionTransportesTotales
 from entregasDeLosAlpes.seedwork.infraestructura.proyecciones import ejecutar_proyeccion
 from entregasDeLosAlpes.seedwork.infraestructura import utils
 
@@ -18,7 +18,7 @@ def suscribirse_a_eventos(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-orden', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='entregasDeLosAlpes-sub-eventos', schema=AvroSchema(EventoOrdenRecibida))
+        consumidor = cliente.subscribe('eventos-transporte', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='entregasDeLosAlpes-sub-eventos', schema=AvroSchema(EventoProductoEntregado))
 
         while True:
             mensaje = consumidor.receive()
@@ -26,9 +26,9 @@ def suscribirse_a_eventos(app=None):
             print(f'Evento recibido: {datos}')
 
             # TODO Identificar el tipo de CRUD del evento: Creacion, actualización o eliminación.
-            ejecutar_proyeccion(ProyeccionOrdenesTotales(datos.fecha_recepcion, ProyeccionOrdenesTotales.ADD), app=app)
-            ejecutar_proyeccion(ProyeccionOrdenesLista(datos.id_orden, datos.id_cliente, datos.estado, datos.fecha_recepcion, datos.fecha_actualizacion), app=app)
-            
+            ejecutar_proyeccion(ProyeccionTransportesTotales(datos.fecha_recepcion, ProyeccionTransportesTotales.ADD), app=app)
+            ejecutar_proyeccion(ProyeccionTransportesLista(datos.id_transporte, datos.id_cliente, datos.id_bodega, datos.estado, datos.fecha_recepcion, datos.fecha_entrega), app=app)
+
             consumidor.acknowledge(mensaje)     
 
         cliente.close()
@@ -42,7 +42,7 @@ def suscribirse_a_comandos(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-orden', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='entregasDeLosAlpes-sub-comandos', schema=AvroSchema(ComandoRecibirOrden))
+        consumidor = cliente.subscribe('comandos-transporte', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='entregasDeLosAlpes-sub-comandos', schema=AvroSchema(EventoProductoEntregado))
 
         while True:
             mensaje = consumidor.receive()

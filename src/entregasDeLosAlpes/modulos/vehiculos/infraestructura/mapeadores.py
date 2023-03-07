@@ -1,4 +1,4 @@
-""" Mapeadores para la capa de infrastructura del dominio de vuelos
+""" Mapeadores para la capa de infrastructura del dominio de vehiculos
 
 En este archivo usted encontrará los diferentes mapeadores
 encargados de la transformación entre formatos de dominio y DTOs
@@ -7,30 +7,31 @@ encargados de la transformación entre formatos de dominio y DTOs
 
 from entregasDeLosAlpes.seedwork.dominio.repositorios import Mapeador
 from entregasDeLosAlpes.seedwork.infraestructura.utils import unix_time_millis
-from entregasDeLosAlpes.modulos.productos.dominio.objetos_valor import Ruta
-from entregasDeLosAlpes.modulos.productos.dominio.entidades import Producto, Orden
-from entregasDeLosAlpes.modulos.productos.dominio.eventos import OrdenProcesada, OrdenRecibida, EventoOrden
+from entregasDeLosAlpes.modulos.vehiculos.dominio.objetos_valor import NombreProveedor, Codigo, Ruta
+from entregasDeLosAlpes.modulos.vehiculos.dominio.entidades import Proveedor, Producto, Transporte
+from entregasDeLosAlpes.modulos.vehiculos.dominio.eventos import ProductoEntregado, ProductoRecibido, EventoTransporte
 
-from .dto import Ordenes as OrdenDTO
+from .dto import Transportes as TransporteDTO
+from .dto import Productos as ProductoDTO
 from .dto import Rutas as RutasDTO
 from .excepciones import NoExisteImplementacionParaTipoFabricaExcepcion
 from pulsar.schema import *
 
-class MapadeadorEventosOrden(Mapeador):
+class MapadeadorEventosTransporte(Mapeador):
 
     # Versiones aceptadas
     versions = ('v1',)
 
     LATEST_VERSION = versions[0]
 
-    def _init_(self):
+    def __init__(self):
         self.router = {
-            OrdenRecibida: self._entidad_a_orden_recibida,
-            OrdenProcesada: self._entidad_a_orden_procesada,
+            ProductoRecibido: self._entidad_producto_recibido,
+            ProductoEntregado: self._entidad_producto_entregado
         }
 
     def obtener_tipo(self) -> type:
-        return EventoOrden._class_
+        return EventoTransporte.__class__
 
     def es_version_valida(self, version):
         for v in self.versions:
@@ -38,21 +39,20 @@ class MapadeadorEventosOrden(Mapeador):
                 return True
         return False
 
-    def _entidad_a_orden_recibida(self, entidad: OrdenRecibida, version=LATEST_VERSION):
+    def _entidad_producto_recibido(self, entidad: ProductoRecibido, version=LATEST_VERSION):
         def v1(evento):
-            from .schema.v1.eventos import OrdenRecibidaPayload, EventoOrdenRecibida
+            from .schema.v1.eventos import ProductoRecibidoPayload, EventoProductoRecibido
 
-            payload = OrdenRecibidaPayload(
-                id_orden=str(evento.id_orden), 
-                id_cliente=str(evento.id_cliente), 
-                estado=str(evento.estado), 
-                fecha_creacion=int(unix_time_millis(evento.fecha_recepcion))
+            payload = ProductoRecibidoPayload(
+                id_transporte=str(evento.id_transporte), 
+                id_bodega=str(evento.id_bodega), 
+                fecha_recepcion=int(unix_time_millis(evento.fecha_recepcion))
             )
-            evento_integracion = EventoOrdenRecibida(id=str(evento.id))
+            evento_integracion = EventoProductoRecibido(id=str(evento.id))
             evento_integracion.id = str(evento.id)
             evento_integracion.time = int(unix_time_millis(evento.fecha_recepcion))
             evento_integracion.specversion = str(version)
-            evento_integracion.type = 'OrdenRecibida'
+            evento_integracion.type = 'ProductoRecibido'
             evento_integracion.datacontenttype = 'AVRO'
             evento_integracion.service_name = 'entregasDeLosAlpes'
             evento_integracion.data = payload
@@ -63,48 +63,51 @@ class MapadeadorEventosOrden(Mapeador):
             raise Exception(f'No se sabe procesar la version {version}')
 
         if version == 'v1':
-            return v1(entidad)       
+            return v1(entidad)     
 
-    def _entidad_a_orden_procesada(self, entidad: OrdenProcesada, version=LATEST_VERSION):
+    def _entidad_producto_entregado(self, entidad: ProductoEntregado, version=LATEST_VERSION):
         def v1(evento):
-            from .schema.v1.eventos import  OrdenProcesadaPayload, EventoOrdenProcesada
-            payload = OrdenProcesadaPayload(
-                id_orden=str(evento.id_orden), 
+            from .schema.v1.eventos import ProductoEntregadoPayload, EventoProductoEntregado
+
+            payload = ProductoEntregadoPayload(
+                id_transporte=str(evento.id_transporte), 
                 id_cliente=str(evento.id_cliente), 
-                estado=str(evento.estado), 
+                fecha_entrega=int(unix_time_millis(evento.fecha_entrega))
             )
-            evento_integracion = EventoOrdenProcesada(id=str(evento.id))
+            evento_integracion = EventoProductoEntregado(id=str(evento.id))
             evento_integracion.id = str(evento.id)
+            evento_integracion.time = int(unix_time_millis(evento.fecha_entrega))
             evento_integracion.specversion = str(version)
-            evento_integracion.type = 'OrdenRecibida'
+            evento_integracion.type = 'ProductoRecibido'
             evento_integracion.datacontenttype = 'AVRO'
             evento_integracion.service_name = 'entregasDeLosAlpes'
             evento_integracion.data = payload
 
             return evento_integracion
+                    
         if not self.es_version_valida(version):
             raise Exception(f'No se sabe procesar la version {version}')
 
         if version == 'v1':
-            return v1(entidad) 
-            
+            return v1(entidad)   
 
-    def entidad_a_dto(self, entidad: EventoOrden, version=LATEST_VERSION) -> OrdenDTO:
+    def entidad_a_dto(self, entidad: EventoTransporte, version=LATEST_VERSION) -> TransporteDTO:
         if not entidad:
             raise NoExisteImplementacionParaTipoFabricaExcepcion
-        func = self.router.get(entidad._class_, None)
+        func = self.router.get(entidad.__class__, None)
 
         if not func:
             raise NoExisteImplementacionParaTipoFabricaExcepcion
 
         return func(entidad, version=version)
 
-    def dto_a_entidad(self, dto: OrdenDTO, version=LATEST_VERSION) -> Orden:
+    def dto_a_entidad(self, dto: TransporteDTO, version=LATEST_VERSION) -> Transporte:
         raise NotImplementedError
 
 
-class MapeadorOrden(Mapeador):
+class MapeadorTransporte(Mapeador):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
+
 
     def _procesar_ruta_dto(self, ruta_dto: list) -> list[Ruta]:
         ruta_dict = dict()
@@ -128,7 +131,7 @@ class MapeadorOrden(Mapeador):
             #odos.append(Odo(segmentos))
 
         return [Ruta()]
-
+    
     def _procesar_ruta(self, ruta: any) -> list[RutasDTO]:
         rutas_dto = list()
 
@@ -145,30 +148,30 @@ class MapeadorOrden(Mapeador):
         return rutas_dto
 
     def obtener_tipo(self) -> type:
-        return Orden._class_
+        return Transporte._class_
 
-    def entidad_a_dto(self, entidad: Orden) -> OrdenDTO:
+    def entidad_a_dto(self, entidad: Transporte) -> TransporteDTO:
         
-        orden_dto = OrdenDTO()
-        orden_dto.fecha_recepcion = entidad.fecha_recepcion
-        orden_dto.fecha_actualizacion = entidad.fecha_actualizacion
-        orden_dto.id = str(entidad.id)
+        transporte_dto = TransporteDTO()
+        transporte_dto.fecha_recepcion = entidad.fecha_recepcion
+        transporte_dto.fecha_entrega = entidad.fecha_entrega
+        transporte_dto.id = str(entidad.id)
 
         productos_dto = list()
         
         for productos in entidad.listaProd:
             productos_dto.extend(self._procesar_producto(productos))
 
-        orden_dto.productos = productos_dto
+        transporte_dto.productos = productos_dto
 
-        return orden_dto
+        return transporte_dto
 
-    def dto_a_entidad(self, dto: OrdenDTO) -> Orden:
-        orden = Orden(dto.id, dto.fecha_creacion, dto.fecha_actualizacion)
-        orden.rutas = list()
+    def dto_a_entidad(self, dto: TransporteDTO) -> Transporte:
+        transporte = Transporte(dto.id, dto.fecha_recepcion, dto.fecha_entrega)
+        transporte.rutas = list()
 
         rutas_dto: list[RutasDTO] = dto.rutas
 
-        orden.rutas.extend(self._procesar_ruta_dto(rutas_dto))
+        transporte.rutas.extend(self._procesar_ruta_dto(rutas_dto))
         
-        return orden
+        return transporte
