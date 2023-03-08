@@ -1,19 +1,29 @@
-# Tutorial 7 - Event Sourcing
+# Diseño y Construcción de Soluciones No Monolíticas
+# Entrega 4 - Prueba de Concepto
 
-Repositorio con código base con la implementación de un servicio usando el patrón Event Sourcing.
+En este repositorio se puede ver el proyecto que construimos para Entregas de Los Alpes, con el objetivo de cumplir con tres escenarios de calidad relacionados a tres atributos de calidad distintos.
+- Disponibilidad
+- Escalabilidad
+- Modificabilidad
 
-Este repositorio está basado en el repositorio de liberación de datos visto en el tutorial 6 del curso. Por tal motivo, puede usar ese mismo repositorio para entender algunos detalles que este README no cubre.
+Para ello, implementamos una solución basada en microservicios usando el patrón Event Sourcing, teniendo en cuenta el uso de seedworks con el objetivo de facilitar la modificabilidad del código con respecto a cambios en el futuro. Adicionalmente, utilizamos MySQL para tener una base de datos escalable.
 
 ## Estructura del proyecto
 
-Este repositorio sigue en general la misma estructura del repositorio de origen. Sin embargo, hay un par de adiciones importante mencionar:
+El repositorio está construido a patir de 3 microservicios principales, distribuidos dentro de tres módulos distintos.
+### Productos:
+- El archivo **src/entregasDeLosAlpes/modulos/productos/dominio/entidades.py** describe el microservicio relacionado con el manejo de las **Ordenes** dentro de Entregas de los Alpes.
+### Bodegas:
+- El archivo **src/entregasDeLosAlpes/modulos/bodegas/dominio/entidades.py** describe el microservicio relacionado con la distribución del inventario para el **Almacenamiento** dentro de Entregas de los Alpes.
+### Vehículos:
+- El archivo **src/entregasDeLosAlpes/modulos/vehiculos/dominio/entidades.py** describe el microservicio correspondiente al **Transporte** de productos dentro de Entregas de los Alpes.
+### Especificaciones:
+- El archivo **src/entregasDeLosAlpes/modulos/vuelos/infraestructura/proyecciones.py** ahora incluye una unidad de trabajo para Pulsar, esta nos va ayudar a mantener la consistencia transaccional en el servicio usando Apache Pulsar como nuestro Event Store.
+- El archivo **src/entregasDeLosAlpes/modulos/vuelos/infraestructura/proyecciones.py** cuenta con las diferentes formas en que podemos hacer proyección de nuestros datos. Una de las proyecciones tiene propósitos analíticos y la otra transaccionales.
+- El archivo **src/entregasDeLosAlpes/modulos/vuelos/infraestructura/vistas.py** cuenta con el modelo de vistas que podemos exponer a nuestro clientes. Como se puede observar, este es un modelo bastante genérico definido en el seedwork (pero usted puede hacerlo mucho más complejo).
+- Los archivos **src/entregasDeLosAlpes/seedwork/infraestructura/proyecciones.py** y **src/aeroalpes/seedwork/infraestructura/vistas.py** proveen las interfaces y definiciones genéricas para las proyecciones, handlers y vistas.
 
-- El archivo **src/aeroalpes/config/uow.py** ahora incluye una unidad de trabajo para Pulsar, esta nos va ayudar a mantener la consistencia transaccional en el servicio usando Apache Pulsar como nuestro Event Store.
-- El archivo **src/aeroalpes/modulos/vuelos/infraestructura/proyecciones.py** cuenta con las diferentes formas en que podemos hacer proyección de nuestros datos. Una de las proyecciones tiene propósitos analíticos y la otra transaccionales.
-- El archivo **src/aeroalpes/modulos/vuelos/infraestructura/vistas.py** cuenta con el modelo de vistas que podemos exponer a nuestro clientes. Como se puede observar, este es un modelo bastante genérico definido en el seedwork (pero usted puede hacerlo mucho más complejo).
-- Los archivos **src/aeroalpes/seedwork/infraestructura/proyecciones.py** y **src/aeroalpes/seedwork/infraestructura/vistas.py** proveen las interfaces y definiciones genéricas para las proyecciones, handlers y vistas.
-
-## AeroAlpes
+## EntregasDeLosAlpes
 ### Ejecutar Base de datos
 Desde el directorio principal ejecute el siguiente comando.
 
