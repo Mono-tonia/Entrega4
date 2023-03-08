@@ -1,6 +1,10 @@
 # Diseño y Construcción de Soluciones No Monolíticas
 # Entrega 4 - Prueba de Concepto
 
+```bash
+ Nota: El archivo Teamwork.docx es el documento en donde se explica el proceso de la implementación de los microservicios y el papel que cada uno realizó en el desarrollo de los mismos.
+```
+
 En este repositorio se puede ver el proyecto que construimos para Entregas de Los Alpes, con el objetivo de cumplir con tres escenarios de calidad relacionados a tres atributos de calidad distintos.
 - Disponibilidad
 - Escalabilidad
