@@ -1,4 +1,4 @@
-class ConfirmarOrden():
+class ConfirmarEntrega():
     ...
 
 class RevertirConfirmacion():
