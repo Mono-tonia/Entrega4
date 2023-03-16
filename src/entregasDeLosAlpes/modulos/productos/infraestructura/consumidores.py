@@ -42,7 +42,7 @@ def suscribirse_a_comandos(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-orden', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='entregasDeLosAlpes-sub-comandos', schema=AvroSchema(ComandoRecibirOrden))
+        consumidor = cliente.subscribe('comando-recibir-orden', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='entregasDeLosAlpes-sub-comando-recibir-orden', schema=AvroSchema(ComandoRecibirOrden))
 
         while True:
             mensaje = consumidor.receive()

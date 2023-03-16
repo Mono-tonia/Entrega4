@@ -17,6 +17,9 @@ tasks:
       docker build . -f adaptador.Dockerfile -t entregas_de_los_alpes/adaptador &&
       docker build . -f notificacion.Dockerfile -t entregas_de_los_alpes/notificacion &&
       docker build . -f ui.Dockerfile -t entregas_de_los_alpes/ui &&
+      docker build . -f cliente.Dockerfile -t entregas_de_los_alpes/cliente &&
+      docker build . -f vehiculos.Dockerfile -t entregas_de_los_alpes/vehiculos &&
+      docker build . -f bodegas.Dockerfile -t entregas_de_los_alpes/bodegas &&
       gp sync-done images
   - name: Crear folder para datos, clientes, conectores y asigna permisos
     init: > 
