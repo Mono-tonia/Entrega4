@@ -2,7 +2,7 @@
 # Entrega 4 - Prueba de Concepto
 
 ```bash
- Nota: El archivo Teamwork.docx es el documento en donde se explica el proceso de la implementación de los microservicios y el papel que cada uno realizó en el desarrollo de los mismos.
+ Nota: El archivo Teamwork2.docx es el documento en donde se explica el proceso de la implementación de sagas y BFF y el papel que cada uno realizó en el desarrollo de los mismos.
 ```
 
 En este repositorio se puede ver el proyecto que construimos para Entregas de Los Alpes, con el objetivo de cumplir con tres escenarios de calidad relacionados a tres atributos de calidad distintos.
@@ -35,7 +35,9 @@ Desde el directorio principal ejecute el siguiente comando.
 docker-compose --profile db up
 docker-compose --profile pulsar up
 ```
-
+```
+uvicorn bff_web.main:app --host localhost --port 8003 --reload
+```
 Este comando descarga las imágenes e instala las dependencias de la base datos.
 
 ### Ejecutar Aplicación
