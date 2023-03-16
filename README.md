@@ -1,5 +1,5 @@
 # Diseño y Construcción de Soluciones No Monolíticas
-# Entrega 5 - Prueba de Concepto
+# Entrega 5 - Prueba de Concepto Final
 
 ```bash
  Nota: El archivo Teamwork2.docx es el documento en donde se explica el proceso de la implementación de sagas y BFF y el papel que cada uno realizó en el desarrollo de los mismos.
