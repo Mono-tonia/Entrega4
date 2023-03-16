@@ -8,6 +8,7 @@ from flask import Response
 from entregasDeLosAlpes.modulos.productos.aplicacion.mapeadores import MapeadorOrdenDTOJson
 from entregasDeLosAlpes.modulos.productos.aplicacion.comandos.recibir_orden import RecibirOrden
 from entregasDeLosAlpes.modulos.productos.aplicacion.queries.obtener_orden import ObtenerOrden
+from entregasDeLosAlpes.modulos.productos.aplicacion.queries.obtener_todas_ordenes import ObtenerTodasOrdenes
 from pulsar.schema import *
 import pulsar
 from entregasDeLosAlpes.seedwork.aplicacion.comandos import ejecutar_commando
@@ -45,10 +46,15 @@ def obtener_orden_usando_comando():
 @bp.route('/orden', methods=('GET',))
 @bp.route('/orden/<id>', methods=('GET',))
 def dar_orden_usando_query(id=None):
+    map_orden = MapeadorOrdenDTOJson()
     if id:
         query_resultado = ejecutar_query(ObtenerOrden(id))
-        map_orden = MapeadorOrdenDTOJson()
-        
         return map_orden.dto_a_externo(query_resultado.resultado)
     else:
-        return [{'message': 'GET!'}]
+        query_resultado = ejecutar_query(ObtenerTodasOrdenes())
+        resultados = []
+
+        for orden in query_resultado.resultado:
+            resultados.append(map_orden.dto_a_externo(orden))
+
+        return resultados
