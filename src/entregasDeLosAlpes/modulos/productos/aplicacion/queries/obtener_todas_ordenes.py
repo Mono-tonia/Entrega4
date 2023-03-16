@@ -12,7 +12,7 @@ import uuid
 class ObtenerTodasOrdenes(Query):
     ...
 
-class ObtenerTodasOrdenesHandler(ReservaQueryBaseHandler):
+class ObtenerTodasOrdenesHandler(OrdenQueryBaseHandler):
 
     def handle(self, query) -> QueryResultado:
         ordenes_dto = []
@@ -30,6 +30,6 @@ class ObtenerTodasOrdenesHandler(ReservaQueryBaseHandler):
         return QueryResultado(resultado=ordenes_dto)
 
 @query.register(ObtenerTodasOrdenes)
-def ejecutar_query_obtener_reserva(query: ObtenerTodasOrdenes):
+def ejecutar_query_obtener_orden(query: ObtenerTodasOrdenes):
     handler = ObtenerTodasOrdenesHandler()
     return handler.handle(query)
