@@ -37,8 +37,8 @@ class Producto:
 class Ruta:
     fecha_salida: str
     fecha_llegada: str
-    origen: dict
-    destino: dict
+    origen: str
+    destino: str
 
 @strawberry.type
 class Orden:
