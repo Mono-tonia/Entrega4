@@ -4,6 +4,17 @@ from entregasDeLosAlpes.config.db import db
 from .dto import Ordenes as OrdenDTO
 
 class VistaOrden(Vista):
+    def obtener_todos(self):
+        ordenes_dto = db.session.query(OrdenDTO).all()
+        ordenes = list()
+
+        for orden_dto in ordenes_dto:
+            ordenes.append(Orden(id=orden_dto.id, 
+                id_cliente=orden_dto.id_cliente, 
+                estado=orden_dto.estado))
+        
+        return ordenes
+    
     def obtener_por(id=None, estado=None, id_cliente=None, **kwargs) -> [Orden]:
         params = dict()
 
